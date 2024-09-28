@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Ad-Free Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        header nav ul li {
+            margin-left: 20px;
+        }
+
+        header nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        .about {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;/home/bhuvanesh-m/Desktop/desktop/dummy/yt/yt.html
+            margin-bottom: 40px;
+        }
+
+        .about .details {
+            flex: 1;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .about .photo {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about .photo img {
+            max-width: 50%;
+            height: 50%;
+            border-radius: 25%;
+        }
+
+        .converter, .video-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .converter input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .converter button, .video-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .converter .open-button {
+            background-color: #007bff;
+        }
+
+        .converter .open-button:hover {
+            background-color: #0056b3;
+        }
+
+        .converter .refresh-button {
+            background-color: #28a745;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .converter .refresh-button:hover {
+            background-color: #218838;
+        }
+
+        .video-container {
+            display: none;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+        }
+
+        .video-container button {
+            background-color: #007bff; /* Blue background */
+            color: #070707; /* Placeholder color */
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            transition: bottom 0.5s;
+        }
+
+        footer.hidden {
+            bottom: -100px;
+        }
+
+        footer ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        footer ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        footer ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer__copyright {
+            margin-top: 20px;
+        }
+
+        .footer__copyright a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -25%);
+            width: 50%;
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .popup ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .popup ul li {
+            margin: 10px 0;
+        }
+
+        .popup ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .popup .close-btn {
+            background-color: #fff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h2>BHUVANESH M</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="https://bhuvaneshm.in">Home</a></li>
+                <li><a href="https://www.linkedin.com/in/bhuvaneshm-developer/" target="_blank">LinkedIn</a></li>
+                <li><a href="#" id="moreBtn">More</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="converter" id="converter">
+            <h1>YouTube Ad-Free Converter</h1>
+            <input type="text" id="youtube-link" placeholder="Enter YouTube link">
+            <button class="open-button" onclick="convertLink()">Open The Video</button>
+            <button class="refresh-button" onclick="reloadPage()">Refresh</button>
+        </section>
+
+        <section class="video-container" id="video-container">
+            <iframe id="youtube-iframe" src="" allowfullscreen></iframe>
+            <button onclick="goBack()">Back</button>
+        </section>
+        <br>
+        <p>To the <b>Google Community,</b>
+            <br><br>
+            I want to clarify that I am <b>not promoting</b> any <b>illegal activities</b> or <b>advocating</b> for <b>an ad-free community on YouTube</b>. I understand the importance of ads in generating income for YouTube and its content creators. My intention is to use the YouTube embed method, which is an official YouTube domain method, to incorporate videos into websites, modules, blogs, etc.
+            <br><br>
+            This usage complies with YouTube's terms and is meant to enhance user experience while respecting the platform's revenue model.
+            <br><br>
+            <a href="https://support.google.com/youtube/answer/171780?hl=en"><p>Reference Link-1</p></a>
+            <a href="https://developers.google.com/youtube/player_parameters"><p>Reference Link-2</p></a>
+            <br><br>
+            Thank you for your understanding.
+            <br><br>
+            Sincerely,<br><b>  
+            BHUVANESH M</b></p>
+            <br><br><br><br><br><br><br><br>
+    </main>
+    <footer id="footer">
+        <ul>
+            <li><a href="https://github.com/bhuvanesh-m-dev" target="_blank">GitHub</a></li>
+            <li><a href="https://leetcode.com/u/bhuvaneshm_dev/" target="_blank">LeetCode</a></li>
+            <li><a href="https://www.hackerrank.com/profile/bhuvaneshm_dev" target="_blank">HackerRank</a></li>
+        </ul>
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <button class="close-btn" id="closeBtn">Close</button>
+        <ul>
+            <li><a href="https://bhuvaneshm.in/#skill-section"><h1>Skills</h1></a></li>
+            <li><a href="https://bhuvaneshm.in/#contact-section"><h1>Contact</h1></a></li>
+            <li><a href="https://bhuvaneshm.in/#about-section"><h1>About</h1></a></li>
+        </ul>
+    </div>
+
+    <script>
+        document.getElementById('moreBtn').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        });
+
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        });
+
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        });
+
+        let footerTimeout;
+        let footerVisible = true;
+
+        function hideFooter() {
+            document.getElementById('footer').classList.add('hidden');
+            footerVisible = false;
+        }
+
+        function showFooter() {
+            document.getElementById('footer').classList.remove('hidden');
+            footerVisible = true;
+        }
+
+        function resetFooterTimeout() {
+            clearTimeout(footerTimeout);
+            showFooter();
+            footerTimeout = setTimeout(hideFooter, 3000); // Hide after 3 seconds of inactivity
+        }
+
+        document.addEventListener('mousemove', resetFooterTimeout);
+        document.addEventListener('keydown', resetFooterTimeout);
+
+        footerTimeout = setTimeout(hideFooter, 5000); // Hide after 5 seconds of page load
+
+        function convertLink() {
+            const input = document.getElementById('youtube-link').value;
+            const videoIdMatch = input.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=))((\w|-){11})/);
+
+            if (videoIdMatch) {
+                const videoId = videoIdMatch[1];
+                const embedLink = `https://www.youtube.com/embed/${videoId}`;
+                document.getElementById('youtube-iframe').src = embedLink;
+                document.getElementById('converter').style.display = 'none';
+                document.getElementById('video-container').style.display = 'block';
+            } else {
+                alert('Invalid YouTube link');
+            }
+        }
+
+        function goBack() {
+            document.getElementById('youtube-iframe').src = '';
+            document.getElementById('video-container').style.display = 'none';
+            document.getElementById('converter').style.display = 'block';
+        }
+
+        function reloadPage() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
